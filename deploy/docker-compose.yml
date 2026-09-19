@@ -1,0 +1,61 @@
+name: amr-fleet
+
+x-robot: &robot
+  build:
+    context: ..
+    dockerfile: deploy/Dockerfile.robot
+  restart: unless-stopped
+  environment:
+    MULTICAST_GROUP: ${MULTICAST_GROUP:-239.255.0.1}
+    MULTICAST_PORT: ${MULTICAST_PORT:-5005}
+    MULTICAST_INTERFACE: ${MULTICAST_INTERFACE:-0.0.0.0}
+    SIM_SEED: ${SIM_SEED:-2026}
+    LOG_LEVEL: ${LOG_LEVEL:-INFO}
+  networks:
+    - amr-net
+
+services:
+  amr-1:
+    <<: *robot
+    environment:
+      ROBOT_ID: amr-1
+      MULTICAST_GROUP: ${MULTICAST_GROUP:-239.255.0.1}
+      MULTICAST_PORT: ${MULTICAST_PORT:-5005}
+      MULTICAST_INTERFACE: ${MULTICAST_INTERFACE:-0.0.0.0}
+      SIM_SEED: ${SIM_SEED:-2026}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+
+  amr-2:
+    <<: *robot
+    environment:
+      ROBOT_ID: amr-2
+      MULTICAST_GROUP: ${MULTICAST_GROUP:-239.255.0.1}
+      MULTICAST_PORT: ${MULTICAST_PORT:-5005}
+      MULTICAST_INTERFACE: ${MULTICAST_INTERFACE:-0.0.0.0}
+      SIM_SEED: ${SIM_SEED:-2026}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+
+  amr-3:
+    <<: *robot
+    environment:
+      ROBOT_ID: amr-3
+      MULTICAST_GROUP: ${MULTICAST_GROUP:-239.255.0.1}
+      MULTICAST_PORT: ${MULTICAST_PORT:-5005}
+      MULTICAST_INTERFACE: ${MULTICAST_INTERFACE:-0.0.0.0}
+      SIM_SEED: ${SIM_SEED:-2026}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+
+  dashboard:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile.dashboard
+    restart: unless-stopped
+    ports:
+      - "${DASHBOARD_PORT:-8000}:8000"
+    networks:
+      - amr-net
+
+networks:
+  amr-net:
+    name: amr-net
+    driver: bridge
