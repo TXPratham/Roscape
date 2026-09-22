@@ -3,5 +3,7 @@ __pycache__/
 .pytest_cache/
 .pytest*
 .venv/
+venv/
 benchmark/results/*.csv
+
 benchmark/results/*.png
